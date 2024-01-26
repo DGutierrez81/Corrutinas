@@ -12,33 +12,48 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavHostController
 
-@Preview(showBackground = true)
+
+
 @Composable
-fun screen1(){
-
+fun Screen1(navController: NavHostController, viewModel: ViewModel){
+    val cambiar: Boolean by viewModel.cambiar.observeAsState(true)
+    val veces: Int by viewModel.veces.observeAsState(0)
+    //var cambiar by rememberSaveable{ mutableStateOf(true) }
+    //var veces by rememberSaveable{ mutableStateOf( 0)}
+    var mostrar by rememberSaveable {
+        mutableStateOf(false)
+    }
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
-        Button(onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+        Button(onClick = { viewModel.color()},
+            colors = ButtonDefaults.buttonColors(containerColor = if(cambiar) Color.Red else Color.Blue)
         ) {
             Text(text = "Cambiar de color")
         }
-        Text(text = "Este es el texto")
-        Button(onClick = { /*TODO*/ },
+        if(mostrar)Text(text = "Respuesta de la API: $veces")
+        Button(onClick = { viewModel.bloqueoApp()
+            mostrar = true},
             colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
         ) {
             Text(text = "LLamar Api")
         }
     }
 }
+
 
