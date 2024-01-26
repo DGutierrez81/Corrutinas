@@ -30,25 +30,23 @@ import androidx.navigation.NavHostController
 @Composable
 fun Screen1(navController: NavHostController, viewModel: ViewModel){
     val cambiar: Boolean by viewModel.cambiar.observeAsState(true)
-    val veces: Int by viewModel.veces.observeAsState(0)
+    val veces: Int by viewModel.veces.observeAsState(1)
+    val mostrar: Boolean by viewModel.mostrar.observeAsState(false)
     //var cambiar by rememberSaveable{ mutableStateOf(true) }
     //var veces by rememberSaveable{ mutableStateOf( 0)}
-    var mostrar by rememberSaveable {
-        mutableStateOf(false)
-    }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
-        Button(onClick = { viewModel.color()},
-            colors = ButtonDefaults.buttonColors(containerColor = if(cambiar) Color.Red else Color.Blue)
+        Button(onClick = { viewModel.color(veces)},
+            colors = ButtonDefaults.buttonColors(containerColor = viewModel.getColor(cambiar))
         ) {
             Text(text = "Cambiar de color")
         }
         if(mostrar)Text(text = "Respuesta de la API: $veces")
-        Button(onClick = { viewModel.bloqueoApp()
-            mostrar = true},
+        Button(onClick = { viewModel.bloqueoApp()},
             colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
         ) {
             Text(text = "LLamar Api")
