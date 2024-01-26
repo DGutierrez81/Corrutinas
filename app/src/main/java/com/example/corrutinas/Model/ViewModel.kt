@@ -7,6 +7,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ViewModel: ViewModel() {
     val _cambiar = MutableLiveData<Boolean>()
@@ -27,10 +32,24 @@ class ViewModel: ViewModel() {
         _veces.value = suma
         if(numero%2 == 0)_cambiar.value = true else _cambiar.value = false
     }
+
+    /*
     fun bloqueoApp(){
         Thread.sleep(5000)
         _mostrar.value = true
     }
+
+     */
+
+    fun fetchData(){
+        viewModelScope.launch {
+            delay(5000)
+            _mostrar.value = true
+        }
+    }
+
 }
+
+
 
 

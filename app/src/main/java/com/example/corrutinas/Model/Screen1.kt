@@ -45,8 +45,10 @@ fun Screen1(navController: NavHostController, viewModel: ViewModel){
         ) {
             Text(text = "Cambiar de color")
         }
+
         if(mostrar)Text(text = "Respuesta de la API: $veces")
-        Button(onClick = { viewModel.bloqueoApp()},
+
+        Button(onClick = { viewModel.fetchData()},
             colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
         ) {
             Text(text = "LLamar Api")
