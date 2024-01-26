@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +33,7 @@ fun Screen1(navController: NavHostController, viewModel: ViewModel){
     val cambiar: Boolean by viewModel.cambiar.observeAsState(true)
     val veces: Int by viewModel.veces.observeAsState(1)
     val mostrar: Boolean by viewModel.mostrar.observeAsState(false)
+    val mensaje: String by viewModel.mensaje.observeAsState("")
     //var cambiar by rememberSaveable{ mutableStateOf(true) }
     //var veces by rememberSaveable{ mutableStateOf( 0)}
 
@@ -40,13 +42,15 @@ fun Screen1(navController: NavHostController, viewModel: ViewModel){
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
-        Button(onClick = { viewModel.color(veces)},
+        Button(onClick = { viewModel.color(viewModel.bol)},
             colors = ButtonDefaults.buttonColors(containerColor = viewModel.getColor(cambiar))
         ) {
             Text(text = "Cambiar de color")
         }
 
-        if(mostrar)Text(text = "Respuesta de la API: $veces")
+        if(mostrar) {
+            CircularProgressIndicator()
+        }else Text(text = mensaje)
 
         Button(onClick = { viewModel.fetchData()},
             colors = ButtonDefaults.buttonColors(containerColor = Color.Black)

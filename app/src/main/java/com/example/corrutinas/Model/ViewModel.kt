@@ -20,17 +20,19 @@ class ViewModel: ViewModel() {
     val veces: LiveData<Int> = _veces
     val _mostrar = MutableLiveData<Boolean>()
     val mostrar: LiveData<Boolean> = _mostrar
-    var suma by mutableStateOf( 3)
+    var suma by mutableStateOf( 0)
+    var bol by mutableStateOf( true)
+    val _mensaje = MutableLiveData<String>()
+    val mensaje: LiveData<String> = _mensaje
 
 
 
     fun getColor(cambio: Boolean): Color{
         return if(cambio) Color.Red else Color.Blue
     }
-    fun color(numero: Int){
-        suma += 1
-        _veces.value = suma
-        if(numero%2 == 0)_cambiar.value = true else _cambiar.value = false
+    fun color(cambio: Boolean){
+        bol = !cambio
+        _cambiar.value = bol
     }
 
     /*
@@ -43,9 +45,23 @@ class ViewModel: ViewModel() {
 
     fun fetchData(){
         viewModelScope.launch {
-            delay(5000)
-            _mostrar.value = true
+            try {
+                suma += 1
+                _veces.value = suma
+                _mostrar.value = true
+                llamarApi()
+            }catch (e: Exception){
+                println("Error ${e.message}")
+            }finally {
+
+            }
         }
+    }
+
+    private suspend fun llamarApi(){
+        delay(5000)
+        _mostrar.value = false
+        _mensaje.value = "Respuesta de la API: $suma"
     }
 
 }
